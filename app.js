@@ -19,17 +19,21 @@ console.log(document.querySelector('.message').value);
 */
 
 let secretNumber = Math.trunc(Math.random() * 20) + 1; 
-
 let score = 20;
-
 let highscore = 0;
 
 // * sound notifications.
 let successSound = new Audio('success.mp3');
 let gameOver = new Audio('game-over.mp3');
+let playAgain = new Audio('again.wav');
 
-// * State of the game.
+// * States .
 let winState = 'You win 🎊🎊🎊';
+let loseState = 'Game Over';
+
+
+
+
 
 
 
@@ -47,48 +51,63 @@ document.querySelector('.check').addEventListener('click', function() {
         document.querySelector('.message').textContent = 'Correct Number 🎊🎊🎊';
         document.querySelector('.number').textContent = secretNumber;
         document.querySelector('.state').textContent = winState;
+        document.querySelector('body').style.backgroundColor = '#60b347';
+        document.querySelector('.number').style.width = '40rem';
+        successSound.play();
 
+        if(score > highscore) {
+            highscore = score;
+            document.querySelector('.highscore').textContent = highscore;
 
-                        document.querySelector('body').style.backgroundColor = '#60b347';
-                        document.querySelector('.number').style.width = '40rem';
-                        successSound.play();
-
-            if(score > highscore) {
-                highscore = score;
-                document.querySelector('.highscore').textContent = highscore;
-            }
+        }  else if(guess !== secretNumber) {
+            if(score > 1){
+                document.querySelector('.message').textContent = guess > secretNumber ? 'Too high!!!📈' : 'Too low!!!📉';
+                score--;
+                document.querySelector('.score').textContent = score
+                } else {
+                document.querySelector('.message').textContent = '💥💥💥 You lost the game!';
+                document.querySelector('.score').textContent = 0;
+                document.querySelector('body').style.backgroundColor = 'red';
+                document.querySelector('.state').textContent = loseState;
+                gameOver.play();
+    
+         }
+     }
+ }
         
                 // * When the guess is too high.
-    } else if(guess > secretNumber) {
-            if(score > 1){
-            document.querySelector('.message').textContent = 'Too high!!!📈'
-            score--;
-            document.querySelector('.score').textContent = score
-            } else {
-            document.querySelector('.message').textContent = '💥💥💥 You lost the game!'
-            document.querySelector('.score').textContent = 0;
-            document.querySelector('body').style.backgroundColor = 'red';
-            gameOver.play();
+    // } else if(guess > secretNumber) {
+    //         if(score > 1){
+    //         document.querySelector('.message').textContent = 'Too high!!!📈';
+    //         score--;
+    //         document.querySelector('.score').textContent = score
+    //         } else {
+    //         document.querySelector('.message').textContent = '💥💥💥 You lost the game!';
+    //         document.querySelector('.score').textContent = 0;
+    //         document.querySelector('body').style.backgroundColor = 'red';
+    //         document.querySelector('.state').textContent = loseState;
+    //         gameOver.play();
 
-            }
+    //         }
                 
                 // * When the guess is too low.
-    } else if(guess < secretNumber) {
-        if(score > 1){
-            document.querySelector('.message').textContent = ` ${guess} is Too low!!!📉`;
-           score--;
-            document.querySelector('.score').textContent = score
-            } else {
-            document.querySelector('.message').textContent = '💥💥💥 You lost the game!'
-            document.querySelector('.score').textContent = 0;
-            document.querySelector('body').style.backgroundColor = 'red';
-            gameOver.play();
-
-
-            }
-    }
+    // } else if(guess < secretNumber) {
+    //     if(score > 1){
+    //         document.querySelector('.message').textContent = 'Too low!!!📉';
+    //        score--;
+    //         document.querySelector('.score').textContent = score;
+    //         } else {
+    //         document.querySelector('.message').textContent = '💥💥💥 You lost the game!';
+    //         document.querySelector('.score').textContent = 0;
+    //         document.querySelector('body').style.backgroundColor = 'red';
+    //         document.querySelector('.state').textContent = loseState;
+    //         gameOver.play();
+    //         }
+    // }
     
 });
+
+
 
 
 document.querySelector('.again').addEventListener('click', function() {
@@ -104,6 +123,8 @@ document.querySelector('.again').addEventListener('click', function() {
 
 
 
+
     document.querySelector('body').style.backgroundColor = '#472d30';
     document.querySelector('.number').style.width = '15rem';
+    playAgain.play();
 })
